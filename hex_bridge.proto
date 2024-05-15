@@ -1,4 +1,5 @@
 syntax = "proto3";
+package hstd;
 
 import "hexstd_can_msg.proto";
 import "hex_bridge_types.proto";

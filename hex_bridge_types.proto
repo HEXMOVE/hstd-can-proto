@@ -1,4 +1,5 @@
 syntax = "proto3";
+package hstd;
 
 enum MsgSourceType {
   // 永远不要主动使用这个值
