@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+enum MsgSourceType {
+  // 永远不要主动使用这个值
+  SOURCE_UNKNOWN = 0;
+
+  // 外网 CAN. 如果设备只有一个 CAN, 则定义为外网 CAN
+  SOURCE_EXTERNAL_CAN = 1;
+
+  // 内网 CAN
+  SOURCE_INTERNAL_CAN = 2;
+
+  // ROS, 实际一般指 自动化的代码 发送的 CAN 消息,
+  // 与 XVIEW 这种 用户操作 的消息区分开来
+  SOURCE_PC_ROS = 3;
+
+  // XVIEW, 实际一般指 用户操作 的软件 发送的 CAN 消息,
+  SOURCE_XVIEW = 4;
+
+  // 特殊 Source,
+  // 为 HexStdCanMsg.source 时指 CAN-HUB 自己发出的消息
+  // 为 HexStdCanMsg.destination 时指专门发给 CAN-HUB 的消息,
+  //  CAN-HUB收到后将不会转发到物理CAN线等其他消息源上
+  SOURCE_CAN_HUB = 6;
+}
+
+enum DeviceClass {
+  OTHER_DEVICE = 0;
+  ESP_CAN_HUB = 1;
+  PC = 2;
+  ROUTER_CAN_HUB = 3;
+}
+
+enum HexBridgeProtocolVersion {
+  HexBridgeProtocolInvalid = 0;
+  HexBridgeProtocolV1 = 1;
+}
+
+message MonotonicClock {
+  uint32 ms_since_system_boot = 1;
+}

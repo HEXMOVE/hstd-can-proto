@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+import "hexstd_can_msg.proto";
+import "hex_bridge_types.proto";
+
+message RTCTimestamp {
+  // Represents seconds of UTC time since Unix epoch
+  // 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
+  // 9999-12-31T23:59:59Z inclusive.
+  uint32 seconds = 1;
+  uint32 micro_seconds = 2;
+}
+
+message DeviceInfo {
+  DeviceClass device_class = 1;
+
+  bool can_ext_id_capable = 2;
+  bool can_fd_capable = 3;
+
+  // Max len 8(Include null terminator), usually git hash
+  optional string version = 4;
+}
+
+message DeviceConfig {
+  // Name of this device, not version of type
+  // Use it like this:
+  //  Kison's HUB
+  // Max len 25(Include null terminator)
+  optional string name = 1;
+  // 自身的 HEX-STD CAN ID, 注意范围不是0-0xFF
+  // 是 0x xx xx xx 00
+  // 带有 CLASS 与 TYPE 信息, FUNC 部分留空为 00
+  optional uint32 can_full_id = 2;
+}
+
+message MessageSourceInfo {
+  MsgSourceType type = 1;
+  bool available = 2;
+}
+
+message MessageSourceConfig {
+  MsgSourceType type = 1;
+  uint32 baud_rate = 2;
+  bool enabled = 3;
+  uint32 filter_id = 4;
+  uint32 filter_mask = 5;
+}
+
+message Property {
+  // readonly ones cannot be used in set_property
+  oneof prop {
+    // readonly
+    DeviceInfo info = 1;
+    // readwrite
+    DeviceConfig config = 2;
+    // readonly
+    MessageSourceInfo msg_source_info = 3;
+    // readwrite
+    MessageSourceConfig msg_source_config = 4;
+    // readwrite
+    RTCTimestamp time = 5;
+    // readonly
+    MonotonicClock monotonic_clock = 6;
+  }
+}
+
+message Bridge {
+  HexBridgeProtocolVersion protocol_version = 1;
+  oneof msg {
+    HexStdCanMsg can_msg = 2;
+
+    Property property_request = 3;
+    Property property_response = 4;
+    Property set_property = 5;
+
+    // Check if someone is there
+    uint32 ping = 6;
+    // Send back same value when receiving a ping
+    uint32 pong = 7;
+
+    // When set to true, RX should reboot or do equivalent thing
+    bool reboot = 8;
+  }
+}
