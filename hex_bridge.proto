@@ -65,6 +65,13 @@ message Property {
   }
 }
 
+message PackageTransmittingInfo {
+  // Package lost count due to network problem, from sender of this message to receiver
+  uint32 total_tx_lost = 1;
+  // Package lost count due to network problem, from receiver of this message to sender
+  uint32 total_rx_lost = 2;
+}
+
 message Bridge {
   HexBridgeProtocolVersion protocol_version = 1;
   oneof msg {
@@ -81,5 +88,7 @@ message Bridge {
 
     // When set to true, RX should reboot or do equivalent thing
     bool reboot = 8;
+
+    PackageTransmittingInfo transmit_info = 9;
   }
 }
