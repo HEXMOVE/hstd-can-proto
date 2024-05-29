@@ -67,9 +67,11 @@ message Property {
 
 message PackageTransmittingInfo {
   // Package lost count due to network problem, from sender of this message to receiver
-  uint32 total_tx_lost = 1;
+  bool tx_lost = 1;
   // Package lost count due to network problem, from receiver of this message to sender
-  uint32 total_rx_lost = 2;
+  bool rx_lost = 2;
+  // Package lost due to the can layer
+  bool can_lost = 3;
 }
 
 message Bridge {
@@ -90,5 +92,7 @@ message Bridge {
     bool reboot = 8;
 
     PackageTransmittingInfo transmit_info = 9;
+
+    bool clear_transmitting_error_state = 10;
   }
 }
