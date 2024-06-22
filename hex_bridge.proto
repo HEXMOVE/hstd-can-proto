@@ -32,6 +32,8 @@ message DeviceConfig {
   // 是 0x xx xx xx 00
   // 带有 CLASS 与 TYPE 信息, FUNC 部分留空为 00
   optional uint32 can_full_id = 2;
+  // true means the 120 termination is on
+  optional bool term = 3;
 }
 
 message MessageSourceInfo {
