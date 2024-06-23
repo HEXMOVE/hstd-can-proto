@@ -85,11 +85,6 @@ message Bridge {
     Property property_response = 4;
     Property set_property = 5;
 
-    // Check if someone is there
-    uint32 ping = 6;
-    // Send back same value when receiving a ping
-    uint32 pong = 7;
-
     // When set to true, RX should reboot or do equivalent thing
     bool reboot = 8;
 
