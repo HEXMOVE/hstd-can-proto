@@ -91,7 +91,7 @@ message Bridge {
 
     // When set to true, RX should reboot or do equivalent thing
     bool reboot = 8;
-
+    // When set to true, RX would response with a package. Usually just property_response::MonotonicClock
     bool protocol_version_request = 9;
   }
 }
