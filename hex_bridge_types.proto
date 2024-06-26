@@ -35,7 +35,8 @@ enum DeviceClass {
 
 enum HexBridgeProtocolVersion {
   // Invalid version.
-  // Receiving this version will result in a response carrying the current version this device is running
+  // Can only use with protocol_version_request, to get a package with the current version.
+  // All other cases will just break the connection.
   HexBridgeProtocolRequest = 0;
   // Current version
   //  CAN FD for this version is not supported yet

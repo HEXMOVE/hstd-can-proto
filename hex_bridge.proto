@@ -91,5 +91,7 @@ message Bridge {
 
     // When set to true, RX should reboot or do equivalent thing
     bool reboot = 8;
+
+    bool protocol_version_request = 9;
   }
 }
