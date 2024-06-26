@@ -6,20 +6,21 @@ import "hex_bridge_types.proto";
 
 message RTCTimestamp {
   // Represents seconds of UTC time since Unix epoch
-  // 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
-  // 9999-12-31T23:59:59Z inclusive.
-  uint32 seconds = 1;
+  int64 seconds = 1;
   uint32 micro_seconds = 2;
+}
+
+message TimeConfig {
+  // Read / Write
+  RTCTimestamp rtc_time = 1;
+  // Read only
+  MonotonicClock monotonic_clock = 6;
 }
 
 message DeviceInfo {
   DeviceClass device_class = 1;
-
-  bool can_ext_id_capable = 2;
-  bool can_fd_capable = 3;
-
-  // Max len 8(Include null terminator), usually git hash
-  optional string version = 4;
+  // Max len 16(Include null terminator), usually git hash
+  optional string version = 2;
 }
 
 message DeviceConfig {
@@ -32,21 +33,26 @@ message DeviceConfig {
   // 是 0x xx xx xx 00
   // 带有 CLASS 与 TYPE 信息, FUNC 部分留空为 00
   optional uint32 can_full_id = 2;
-  // true means the 120 termination is on
-  optional bool term = 3;
 }
 
 message MessageSourceInfo {
-  MsgSourceType type = 1;
+  // The channel to set
+  MsgSourceType channel = 1;
+  // 本设备是否存在此通道，false 代表压根没有这个通道
   bool available = 2;
+  bool can_ext_id_capable = 3;
+  bool can_fd_capable = 4;
 }
 
 message MessageSourceConfig {
-  MsgSourceType type = 1;
+  // The channel to set
+  MsgSourceType channel = 1;
   uint32 baud_rate = 2;
   bool enabled = 3;
   uint32 filter_id = 4;
   uint32 filter_mask = 5;
+  // true means the 120 termination is on. False means off. Leave empty means do not change
+  optional bool term = 6;
 }
 
 message Property {
@@ -61,9 +67,7 @@ message Property {
     // readwrite
     MessageSourceConfig msg_source_config = 4;
     // readwrite
-    RTCTimestamp time = 5;
-    // readonly
-    MonotonicClock monotonic_clock = 6;
+    TimeConfig time = 5;
   }
 }
 

@@ -19,6 +19,7 @@ enum MsgSourceType {
   SOURCE_XVIEW = 4;
 
   // 特殊 Source,
+  // 所有设备必须支持此 channel
   // 为 HexStdCanMsg.source 时指 CAN-HUB 自己发出的消息
   // 为 HexStdCanMsg.destination 时指专门发给 CAN-HUB 的消息,
   //  CAN-HUB收到后将不会转发到物理CAN线等其他消息源上
@@ -35,11 +36,15 @@ enum DeviceClass {
 enum HexBridgeProtocolVersion {
   HexBridgeProtocolInvalid = 0;
   // Current version
+  //  CAN FD for this version is not supported yet
   HexBridgeProtocolV1 = 1;
   // Next version
+  //  Add support for Package loss detection: On can bus and on transition
+  //  CAN FD for this version is not supported yet
   HexBridgeProtocolV2 = 2;
 }
 
 message MonotonicClock {
+  // Will overflow after 49.7 days
   uint32 ms_since_system_boot = 1;
 }

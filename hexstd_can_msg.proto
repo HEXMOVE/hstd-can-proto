@@ -12,6 +12,7 @@ message HexStdCanMsg {
   bool ext_id = 3;
   // True 代表此 frame 是 fd can 帧.
   // 如果设备不支持 can 帧, 此帧既不会被转发, 也不会被记录
+  // Reserved for future can fd possible device.
   bool can_fd = 4;
 
   // 自身发出收到的CAN消息时加上 source

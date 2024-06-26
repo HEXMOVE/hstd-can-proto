@@ -1,2 +1,2 @@
 hstd.DeviceConfig.name max_size:25
-hstd.DeviceInfo.version max_size:8
+hstd.DeviceInfo.version max_size:16
