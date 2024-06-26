@@ -7,14 +7,6 @@ import "hex_bridge_types.proto";
 message RTCTimestamp {
   // Represents seconds of UTC time since Unix epoch
   int64 seconds = 1;
-  uint32 micro_seconds = 2;
-}
-
-message TimeConfig {
-  // Read / Write
-  RTCTimestamp rtc_time = 1;
-  // Read only
-  MonotonicClock monotonic_clock = 6;
 }
 
 message DeviceInfo {
@@ -51,7 +43,9 @@ message MessageSourceConfig {
   bool enabled = 3;
   uint32 filter_id = 4;
   uint32 filter_mask = 5;
-  // true means the 120 termination is on. False means off. Leave empty means do not change
+  // Write: True means the 120 termination is on. False means off. Leave empty means do not change
+  // Read : True means the 120 termination is on. False means off.
+  //        Empty means the device does not know (For example controlled by a external switch)
   optional bool term = 6;
 }
 
@@ -67,7 +61,9 @@ message Property {
     // readwrite
     MessageSourceConfig msg_source_config = 4;
     // readwrite
-    TimeConfig time = 5;
+    RTCTimestamp time = 5;
+    // readonly
+    MonotonicClock monotonic_clock = 6;
   }
 }
 
