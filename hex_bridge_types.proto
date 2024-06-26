@@ -34,7 +34,10 @@ enum DeviceClass {
 
 enum HexBridgeProtocolVersion {
   HexBridgeProtocolInvalid = 0;
+  // Current version
   HexBridgeProtocolV1 = 1;
+  // Next version
+  HexBridgeProtocolV2 = 2;
 }
 
 message MonotonicClock {
