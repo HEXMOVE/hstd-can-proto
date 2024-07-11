@@ -1,5 +1,13 @@
 # HSTD-CAN-PROTO
 
+English | [简体中文](README_CN.md)
+
+## Intro
+
+This is the protocol for the HEX-STD CAN HUB. It is used to communicate with the CAN HUB.
+
+It is usually used with the WebSocket. 
+
 ### Example uses
 
 - rust: [https://github.com/HEXMOVE/hstd-can-proto-rust-example](https://github.com/HEXMOVE/hstd-can-proto-rust-example)
