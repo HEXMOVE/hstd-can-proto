@@ -5,37 +5,42 @@ import "hex_bridge_types.proto";
 
 message HexStdCanMsg {
   uint32 id = 1;
-  // 为了方便 nanopb 处理, 在 options 中指定 data 最长长度为 8
-  // 关于兼容 CAN-FD, 利用协议版本号区分一下吧
+
+  // To make it easier for nanopb to handle, specify the maximum length of data in options as 8
+  // As for compatibility with CAN-FD, distinguish it by the protocol version number
   bytes data = 2;
-  // True 代表此 frame 是 can 扩展帧
+
+  // True means the id is extended id
   bool ext_id = 3;
-  // True 代表此 frame 是 fd can 帧.
-  // 如果设备不支持 can 帧, 此帧既不会被转发, 也不会被记录
+  // True means the frame is a can fd frame
+  // Warning: If the device does not support can frames, this frame will neither be forwarded nor recorded
   // Reserved for future can fd possible device.
   bool can_fd = 4;
 
-  // 自身发出收到的CAN消息时加上 source
-  // PC 发给 CAN HUB 时 **应该** 使用以下值.
-  //  SOURCE_PC_ROS
-  //  SOURCE_XVIEW
-  // PC 发给 CAN HUB 时 **禁止** 使用以下值. 使用以下值会导致此包被丢弃
-  //  SOURCE_CAN_HUB
-  //  SOURCE_EXTERNAL_CAN
-  //  SOURCE_INTERNAL_CAN
-  // 为了向后兼容, 如果 CAN HUB 收到其他值的消息,
-  // 会将 source 改为 SOURCE_UNKNOWN,
-  // 发送 SOURCE_UNKNOWN 的行为将与 SOURCE_PC_ROS 的行为保持一致
+  // ******* PLEASE READ THIS CAREFULLY *******
+  // ******* IF YOU WANT TO SEND CAN MSG ********
+  // ******* IF YOU DON'T YOU MIGHT FAIL TO SEND ********
+  // When CAN HUB send a message to you, it will set the source to the exact source where the message comes from.
+  // When you want to send a message to CAN HUB, you should set the source to 
+  //    SOURCE_PC_ROS
+  //    SOURCE_XVIEW.
+  // If you set the source to these values, the message will be DROPPED.
+  //    SOURCE_CAN_HUB
+  //    SOURCE_EXTERNAL_CAN
+  //    SOURCE_INTERNAL_CAN
+  // For compatibility, if CAN HUB receives a message with other values, it will treat it as SOURCE_UNKNOWN.
   MsgSourceType source = 5;
 
-  // 希望本消息被发送到哪里, 留空代表发送到设备默认
-  // PC 发给 CAN HUB 时只 **允许** 以下值. 其他任何值会导致此包被丢弃
-  //  留空(发送到设备自身默认)
-  //  SOURCE_EXTERNAL_CAN
-  //  SOURCE_INTERNAL_CAN
-  //  SOURCE_CAN_HUB
-  // CAN HUB 外发时不会使用此值
+  // Where you want to send this message to, leave empty means send to device default.
+  // It is safe to leave empty when sending devices with only one CAN port.
+  // If you want to set the value, you can only set them to
+  //    SOURCE_EXTERNAL_CAN
+  //    SOURCE_INTERNAL_CAN
+  //    SOURCE_CAN_HUB
+  // If you set the value to other values, the message will be DROPPED.
+  // Messages sent by CAN HUB will not set this value.
   optional MsgSourceType destination = 6;
-  // 接收时间戳
+  // A monotonic clock that represents the time when the message is received by the device,
+  //The so called hardware timestamp.
   MonotonicClock receive_time = 7;
 }

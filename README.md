@@ -1,24 +1,40 @@
-# Proto 文件定义
+# HSTD-CAN-PROTO
 
-## Websocket 约定
+### Example uses
 
-### Binary 与 text
+- rust: [https://github.com/HEXMOVE/hstd-can-proto-rust-example](https://github.com/HEXMOVE/hstd-can-proto-rust-example)
 
-正常数据全部使用 `binary` 发送, `text` 都发送 Error。
+### Binary vs text
 
-### 建立连接流程
+All normal data should be sent using `binary`. `text` messages are considered errors.
 
-1. 发送版本问询包，确认对方版本
-   1. ProtocolVersion = HexBridgeProtocolRequest， msg = protocol_version_request = true
-2. 发送包问询：
+### How to establish a connection
+
+1. Send a version request to confirm the version of the other side: (Optional, but you would want to do it)
+   1. ProtocolVersion = HexBridgeProtocolRequest, msg = protocol_version_request = true
+2. Send a package request asking for: (Optional, but you would want to do it)
    1. Property DeviceInfo
    2. Property DeviceConfig
-3. 确认设备符合使用条件
-   1. Property Request MessageSourceInfo，主要看想要打开的 channel 是否存在，是否支持 EXT CAN 与 CAN FD
-4. 设置需要开启的 Message Source，一般是 SOURCE_EXTERNAL_CAN
-   1. MessageSourceConfig 设置 使能，波特率，过滤器，终端电阻等
+3. Confirm that the device meets the conditions for use: (Optional, but you would want to do it)
+   1. Property Request MessageSourceInfo, mainly to see if the channel you want to open exists, and whether it supports EXT CAN and CAN FD
+4. Set the Message Source you want to open, usually SOURCE_EXTERNAL_CAN
+   1. MessageSourceConfig set enable, baud rate, filter, terminal resistance, etc.
+   2. Note that you should read the config after setting it to confirm that it set to the correct value.
+5. You can now open the channel. This is usually optional because EXT CAN will be opened by default.
+6. You can now send and receive messages.
 
-### 严重错误处理流程
+### Receiving a CAN message
 
-1. 版本头不兼容
-   1. 使用 `Text` 通道返回错误并 **关闭连接**
+Just decode the message. All HEX-STD devices has heartbeat messages, so you will always receive messages.
+
+### Sending a CAN message
+
+To send a CAN message without suffering, ***please read*** the comments in `hexstd_can_msg.proto` carefully.
+
+If you really just TL;DR: It is required to set `MsgSourceType source`. If you don't set it, the message might be dropped or sent to the wrong channel.
+
+### Error handling
+
+If you receive a `Text` message, you don't have to close the connection though it is recommended. But you do really want to log it and see what's wrong.
+
+The CAN HUB will close the connection if the `protocol_version` is not compatible.

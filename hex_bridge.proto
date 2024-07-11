@@ -21,16 +21,15 @@ message DeviceConfig {
   //  Kison's HUB
   // Max len 25(Include null terminator)
   optional string name = 1;
-  // 自身的 HEX-STD CAN ID, 注意范围不是0-0xFF
-  // 是 0x xx xx xx 00
-  // 带有 CLASS 与 TYPE 信息, FUNC 部分留空为 00
+  // The HEX-STD CAN ID of device, should be in format 0x 07 xx xx 00
+  // For CAN ID rules, read our CAN ID rules book at docs.hexmove.cn
   optional uint32 can_full_id = 2;
 }
 
 message MessageSourceInfo {
   // The channel to set
   MsgSourceType channel = 1;
-  // 本设备是否存在此通道，false 代表压根没有这个通道
+  // Weather this channel is available, False means the channel is not available
   bool available = 2;
   bool can_ext_id_capable = 3;
   bool can_fd_capable = 4;
@@ -43,9 +42,8 @@ message MessageSourceConfig {
   bool enabled = 3;
   uint32 filter_id = 4;
   uint32 filter_mask = 5;
-  // Write: True means the 120 termination is on. False means off. Leave empty means do not change
-  // Read : True means the 120 termination is on. False means off.
-  //        Empty means the device does not know (For example controlled by a external switch)
+  // Write: True means the 120 termination is on. False means off. Not set means do not change current state.
+  // Read : True means the 120 termination is on. False means off. Not set means the device does not know (For example when the term is controlled by a psychical switch)
   optional bool term = 6;
 }
 

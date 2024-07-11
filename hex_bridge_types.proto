@@ -2,27 +2,23 @@ syntax = "proto3";
 package hstd;
 
 enum MsgSourceType {
-  // 永远不要主动使用这个值
+  // Never use this value
   SOURCE_UNKNOWN = 0;
 
-  // 外网 CAN. 如果设备只有一个 CAN, 则定义为外网 CAN
+  // The external can channel. This is usually the default channel for devices with only one CAN channel.
   SOURCE_EXTERNAL_CAN = 1;
 
-  // 内网 CAN
+  // The internal can channel. Note not all devices have this channel.
   SOURCE_INTERNAL_CAN = 2;
 
-  // ROS, 实际一般指 自动化的代码 发送的 CAN 消息,
-  // 与 XVIEW 这种 用户操作 的消息区分开来
+  // The ROS Channel. This channel just means messages sent by ** Auto Programs **
   SOURCE_PC_ROS = 3;
 
-  // XVIEW, 实际一般指 用户操作 的软件 发送的 CAN 消息,
+  // The XVIEW channel. This channel just means messages sent by ** HUMAN **
   SOURCE_XVIEW = 4;
 
-  // 特殊 Source,
-  // 所有设备必须支持此 channel
-  // 为 HexStdCanMsg.source 时指 CAN-HUB 自己发出的消息
-  // 为 HexStdCanMsg.destination 时指专门发给 CAN-HUB 的消息,
-  //  CAN-HUB收到后将不会转发到物理CAN线等其他消息源上
+  // This is a special source. When it is used as HexStdCanMsg.source, it means the message is sent by CAN-HUB itself.
+  // When it is used as HexStdCanMsg.destination, it means the message is sent to CAN-HUB only, so CAN-HUB will not forward it to physical CAN lines or other message sources.
   SOURCE_CAN_HUB = 6;
 }
 
