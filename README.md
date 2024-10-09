@@ -8,6 +8,8 @@ This is the protocol for the HEX-STD CAN HUB. It is used to communicate with the
 
 It is usually used with the WebSocket. 
 
+Only `Bridge` message type can be sent.
+
 ### Example uses
 
 - rust: [https://github.com/HEXMOVE/hstd-can-proto-rust-example](https://github.com/HEXMOVE/hstd-can-proto-rust-example)

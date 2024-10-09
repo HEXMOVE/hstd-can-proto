@@ -4,7 +4,9 @@
 
 ## 简介
 
-这是 HEX-STD CAN HUB 所使用的协议。它用于与 CAN HUB 通信。一般与 WebSocket 一起使用。使用 Google Protocol Buffers 3 编写。
+这是 HEX-STD CAN HUB 所使用的协议。它用于与 CAN HUB 通信。一般与 WebSocket 一起使用。
+
+只能发送 `Bridge` 消息类型
 
 ### Protobuf
 
