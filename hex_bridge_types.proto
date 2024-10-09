@@ -44,6 +44,5 @@ enum HexBridgeProtocolVersion {
 }
 
 message MonotonicClock {
-  // Will overflow after 49.7 days
-  uint32 ms_since_system_boot = 1;
+  uint32 us_since_system_boot = 1;
 }
