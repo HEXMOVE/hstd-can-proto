@@ -17,30 +17,7 @@ message HexStdCanMsg {
   // Reserved for future can fd possible device.
   bool can_fd = 4;
 
-  // ******* PLEASE READ THIS CAREFULLY *******
-  // ******* IF YOU WANT TO SEND CAN MSG ********
-  // ******* IF YOU DON'T YOU MIGHT FAIL TO SEND ********
-  // When CAN HUB send a message to you, it will set the source to the exact source where the message comes from.
-  // When you want to send a message to CAN HUB, you should set the source to 
-  //    SOURCE_PC_ROS
-  //    SOURCE_XVIEW.
-  // If you set the source to these values, the message will be DROPPED.
-  //    SOURCE_CAN_HUB
-  //    SOURCE_EXTERNAL_CAN
-  //    SOURCE_INTERNAL_CAN
-  // For compatibility, if CAN HUB receives a message with other values, it will treat it as SOURCE_UNKNOWN.
-  MsgSourceType source = 5;
-
-  // Where you want to send this message to, leave empty means send to device default.
-  // It is safe to leave empty when sending devices with only one CAN port.
-  // If you want to set the value, you can only set them to
-  //    SOURCE_EXTERNAL_CAN
-  //    SOURCE_INTERNAL_CAN
-  //    SOURCE_CAN_HUB
-  // If you set the value to other values, the message will be DROPPED.
-  // Messages sent by CAN HUB will not set this value.
-  optional MsgSourceType destination = 6;
   // A monotonic clock that represents the time when the message is received by the device,
-  //The so called hardware timestamp.
+  // The so called hardware timestamp.
   MonotonicClock receive_time = 7;
 }

@@ -4,92 +4,15 @@ package hstd;
 import "hexstd_can_msg.proto";
 import "hex_bridge_types.proto";
 
-message RTCTimestamp {
-  // Represents seconds of UTC time since Unix epoch
-  int64 seconds = 1;
+message LossIndication {
+  uint32 w2c = 1;
+  uint32 c2w = 2;
+  uint32 err = 3;
 }
 
-message DeviceInfo {
-  DeviceClass device_class = 1;
-  // Max len 16(Include null terminator), usually git hash
-  optional string version = 2;
-}
-
-message DeviceConfig {
-  // Name of this device, not version of type
-  // Use it like this:
-  //  Kison's HUB
-  // Max len 25(Include null terminator)
-  optional string name = 1;
-  // The HEX-STD CAN ID of device, should be in format 0x 07 xx xx 00
-  // For CAN ID rules, read our CAN ID rules book at docs.hexmove.cn
-  optional uint32 can_full_id = 2;
-}
-
-message MessageSourceInfo {
-  // The channel to set
-  MsgSourceType channel = 1;
-  // Weather this channel is available, False means the channel is not available
-  bool available = 2;
-  bool can_ext_id_capable = 3;
-  bool can_fd_capable = 4;
-}
-
-message MessageSourceConfig {
-  // The channel to set
-  MsgSourceType channel = 1;
-  uint32 baud_rate = 2;
-  bool enabled = 3;
-  uint32 filter_id = 4;
-  uint32 filter_mask = 5;
-  // Write: True means the 120 termination is on. False means off. Not set means do not change current state.
-  // Read : True means the 120 termination is on. False means off. Not set means the device does not know (For example when the term is controlled by a psychical switch)
-  optional bool term = 6;
-}
-
-message Property {
-  // readonly ones cannot be used in set_property
-  oneof prop {
-    // readonly
-    DeviceInfo info = 1;
-    // readwrite
-    DeviceConfig config = 2;
-    // readonly
-    MessageSourceInfo msg_source_info = 3;
-    // readwrite
-    MessageSourceConfig msg_source_config = 4;
-    // readwrite
-    RTCTimestamp time = 5;
-    // readonly
-    MonotonicClock monotonic_clock = 6;
-  }
-}
-
-//message PackageTransmittingInfo {
-//  // Package lost count due to network problem, from sender of this message to receiver
-//  bool tx_lost = 1;
-//  // Package lost count due to network problem, from receiver of this message to sender
-//  bool rx_lost = 2;
-//  // Package lost due to the can layer
-//  bool can_lost = 3;
-//}
-
-message Bridge {
-  HexBridgeProtocolVersion protocol_version = 1;
+message CanBridgeMessage {
   oneof msg {
     HexStdCanMsg can_msg = 2;
-
-    Property property_request = 3;
-    Property property_response = 4;
-    Property set_property = 5;
-
-//    PackageTransmittingInfo transmit_info = 6;
-//
-//    bool clear_transmitting_error_state = 7;
-
-    // When set to true, RX should reboot or do equivalent thing
-    bool reboot = 8;
-    // When set to true, RX would response with a package. Usually just property_response::MonotonicClock
-    bool protocol_version_request = 9;
+    LossIndication loss_indication = 3;
   }
 }
