@@ -17,6 +17,9 @@ message HexStdCanMsg {
   // Reserved for future can fd possible device.
   bool can_fd = 4;
 
+  // If fd frame, whether to use bit rate switch
+  bool can_fd_brs = 5;
+
   // A monotonic clock that represents the time when the message is received by the device,
   // The so called hardware timestamp.
   MonotonicClock receive_time = 7;
