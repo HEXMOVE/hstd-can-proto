@@ -1,26 +1,26 @@
 syntax = "proto3";
 package hstd;
 
-import "hex_bridge_types.proto";
+message MonotonicClock {
+  uint32 us_since_system_boot = 1;
+}
 
 message HexStdCanMsg {
   uint32 id = 1;
 
-  // To make it easier for nanopb to handle, specify the maximum length of data in options as 8
-  // As for compatibility with CAN-FD, distinguish it by the protocol version number
+  // To make it easier for nanopb to handle, specify the maximum length of data in options as 64.
   bytes data = 2;
 
-  // True means the id is extended id
+  // Whether the id is extended
   bool ext_id = 3;
-  // True means the frame is a can fd frame
-  // Warning: If the device does not support can frames, this frame will neither be forwarded nor recorded
-  // Reserved for future can fd possible device.
+
+  // Whether the frame is a CAN-FD frame
+  // If the other end does not support CAN-FD while this is set to true, the frame will be dropped.
   bool can_fd = 4;
 
-  // If fd frame, whether to use bit rate switch
+  // For CAN-FD frames, whether to use bit rate switch
   bool can_fd_brs = 5;
 
-  // A monotonic clock that represents the time when the message is received by the device,
-  // The so called hardware timestamp.
+  // A monotonic clock that represents the time when the message is received by the device
   MonotonicClock receive_time = 7;
 }

@@ -2,17 +2,23 @@ syntax = "proto3";
 package hstd;
 
 import "hexstd_can_msg.proto";
-import "hex_bridge_types.proto";
 
 message LossIndication {
+  // Lost frame count of WebSocket -> CAN
   uint32 w2c = 1;
+  // Lost frame count of CAN -> WebSocket
   uint32 c2w = 2;
+  // CAN Bus error count
   uint32 err = 3;
 }
 
 message CanBridgeMessage {
   oneof msg {
     HexStdCanMsg can_msg = 2;
+    // Forwarders are supposed to keep track of lost frames and errors
+    // Frame loss happens when, for example, the WebSocket connection is not fast enough
+    // This type of frame should be sent when the connection is not busy
+    // And the internal counter will be reset to 0 after sending
     LossIndication loss_indication = 3;
   }
 }
