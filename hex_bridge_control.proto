@@ -1,0 +1,36 @@
+syntax = "proto3";
+package hstd;
+
+enum DeviceType{
+  WiFiHub = 0;
+  EthernetHub = 1;
+  HexRouter = 2;
+  HexArmController = 3;
+}
+
+enum BridgePbVersion {
+  Invalid = 0;
+  V1 = 1;
+}
+
+message Info {
+  bool can_fd_capable = 1;
+  bool extended_id_capable = 2;
+  repeated uint32 supported_baudrates = 3;
+  DeviceType device_type = 4;
+  string firmware_version = 5;
+  BridgePbVersion bridge_pb_version = 6;
+}
+
+enum TermState{
+  // For example controlled by a physical switch
+  Unknown = 0;
+  On = 1;
+  Off = 2;
+}
+
+message Config {
+  uint32 baudrate = 1;
+  TermState termination = 2;
+  string name = 3;
+}
