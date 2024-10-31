@@ -25,13 +25,15 @@ For http+ws usage, define a url called `root url`.
 
 For example `root url` can be `10.233.233.1:80`
 
-Each can channel has its own `root url`, for example `10.114.514.1/left-arm-can` and `10.114.514.1/right-arm-can`.
+Each can channel has its own `root url`, for example `10.114.51.4/left-arm-can` and `10.114.51.4/right-arm-can`.
 
 For channel defines refer to user manual.
 
 ##### GET `root url`/info
+See `hex_bridge_control.proto`-`Info`
 
 ##### GET/POST `root url`/config
+See `hex_bridge_control.proto`-`Config`
 
 ### Example uses
 

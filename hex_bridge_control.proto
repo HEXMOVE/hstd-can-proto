@@ -16,7 +16,7 @@ enum BridgePbVersion {
 message Info {
   bool can_fd_capable = 1;
   bool extended_id_capable = 2;
-  repeated uint32 supported_baudrates = 3;
+  repeated uint32 supported_baud_rates = 3;
   DeviceType device_type = 4;
   string firmware_version = 5;
   BridgePbVersion bridge_pb_version = 6;
@@ -30,7 +30,8 @@ enum TermState{
 }
 
 message Config {
-  uint32 baudrate = 1;
-  TermState termination = 2;
-  string name = 3;
+  bool enabled = 1;
+  uint32 baud_rate = 2;
+  TermState termination = 3;
+  string name = 4;
 }
