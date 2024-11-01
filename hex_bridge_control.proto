@@ -1,7 +1,7 @@
 syntax = "proto3";
 package hstd;
 
-enum DeviceType{
+enum DeviceType {
   WiFiHub = 0;
   EthernetHub = 1;
   HexRouter = 2;
@@ -31,7 +31,7 @@ enum TermState{
 
 message Config {
   bool enabled = 1;
-  uint32 baud_rate = 2;
-  TermState termination = 3;
-  string name = 4;
+  optional uint32 baud_rate = 2;
+  optional TermState termination = 3;
+  optional string name = 4;
 }

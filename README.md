@@ -29,6 +29,10 @@ Each can channel has its own `root url`, for example `10.114.51.4/left-arm-can` 
 
 For channel defines refer to user manual.
 
+##### WS address
+
+websocket address should be on `root url`/hex-bridge
+
 ##### GET `root url`/info
 See `hex_bridge_control.proto`-`Info`
 

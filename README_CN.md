@@ -29,6 +29,10 @@
 
 关于通道定义，请参阅用户手册。
 
+##### WS address
+
+websocket 地址应为 `root url`/hex-bridge
+
 ##### GET `root url`/info
 参见`hex_bridge_control.proto`-`Info`
 
